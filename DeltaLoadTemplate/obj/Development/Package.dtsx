@@ -1,0 +1,2304 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/4/2024 3:28:28 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-VH3H9M3"
+  DTS:CreatorName="DESKTOP-VH3H9M3\espin"
+  DTS:DTSID="{D1CDC7CC-5356-4201-AE61-67F227CFD367}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
+  DTS:LocaleID="2058"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="14"
+  DTS:VersionGUID="{5ECC2481-56B8-4445-87FE-F4B485C622CC}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB]"
+      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:DTSID="{E060AE54-6A02-41B1-9EB2-593C7A04D87E}"
+      DTS:ObjectName="DESKTOP-VH3H9M3.SSIS_TEST_DB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=DESKTOP-VH3H9M3;Initial Catalog=SSIS_TEST_DB;Integrated Security=True;Application Name=SSIS-Package-{E060AE54-6A02-41B1-9EB2-593C7A04D87E}DESKTOP-VH3H9M3.SSIS_TEST_DB;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{52C10268-63BE-4725-ACFC-04CD56E11791}"
+      DTS:ObjectName="DESKTOP-VH3H9M3.SSIS_TEST_DB1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=DESKTOP-VH3H9M3;Initial Catalog=SSIS_TEST_DB;Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Application Name=SSIS-Package-{52C10268-63BE-4725-ACFC-04CD56E11791}DESKTOP-VH3H9M3.SSIS_TEST_DB1;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Delta Load"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{36F665DC-9D2A-4FB5-9B58-B8379497F0EE}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Delta Load"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Delta Load\Conditional Split"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Conditional Split"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input].Columns[Id_target]"
+                      cachedDataType="i4"
+                      cachedName="Id_target"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id_target]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Conditional Split.Outputs[INSERT]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="INSERT"
+                  synchronousInputId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]}) &amp;&amp; [ISNULL](#{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id_target]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(Id) &amp;&amp; ISNULL(Id_target)</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Conditional Split.Outputs[DELETE]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="DELETE"
+                  synchronousInputId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]}) &amp;&amp; ![ISNULL](#{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id_target]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(Id) &amp;&amp; !ISNULL(Id_target)</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Delete rows"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="Delete rows"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">DELETE FROM PersonaTarget
+WHERE Id = ?;</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Delta Load\Delete rows.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input].Columns[Id_target]"
+                      cachedDataType="i4"
+                      cachedName="Id_target"
+                      externalMetadataColumnId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id_target]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="i4"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Delete rows.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Delete rows.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Delete rows.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Delete rows.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\Delete rows.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Delete rows.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Insert on PersonaTarget"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Carga datos en una base de datos compatible con ADO.NET que use una vista o tabla de base de datos. Se cargan datos en una tabla nueva o existente. Por ejemplo, se usa un proveedor ADO.NET para ODBC para cargar datos en un destino ODBC.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;2"
+              description="Carga datos en una base de datos compatible con ADO.NET que use una vista o tabla de base de datos. Se cargan datos en una tabla nueva o existente. Por ejemplo, se usa un proveedor ADO.NET para ODBC para cargar datos en un destino ODBC."
+              name="Insert on PersonaTarget"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Nombre de la tabla de la base de datos de destino."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">"dbo"."PersonaTarget"</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifique el número de filas por lote. El valor predeterminado es 0, que utiliza el mismo tamaño que el búfer interno de SSIS. "
+                  expressionType="Notify"
+                  name="BatchSize">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito. "
+                  expressionType="Notify"
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Especifica si se debe usar la interfaz SqlBulkCopy para mejorar el rendimiento de las operaciones de inserción masiva. No todos los proveedores admiten esta interfaz."
+                  expressionType="Notify"
+                  name="UseBulkInsertWhenPossible">true</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ADONETDestination</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Delta Load\Insert on PersonaTarget.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB]"
+                  description="Administrador de conexiones administrado"
+                  name="IDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET]"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de destino de ADO NET">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Id]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      externalMetadataColumnId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Cedula]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      externalMetadataColumnId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Nombre]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      externalMetadataColumnId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Apellido]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      externalMetadataColumnId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[FechaNacimiento]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].Columns[FechaInsercion]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaInsercion"
+                      externalMetadataColumnId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[FechaInsercion]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaInsercion]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Id]"
+                      dataType="i4"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      name="Cedula" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      name="Nombre" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      name="Apellido" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      name="FechaNacimiento" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET].ExternalColumns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      name="FechaInsercion" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Insert on PersonaTarget.Outputs[Salida de error de destino de ADO NET]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de destino de ADO NET"
+                  synchronousInputId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Outputs[Salida de error de destino de ADO NET].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Insert on PersonaTarget.Outputs[Salida de error de destino de ADO NET].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\Insert on PersonaTarget.Outputs[Salida de error de destino de ADO NET].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Insert on PersonaTarget.Outputs[Salida de error de destino de ADO NET].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">1</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Cedula]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Nombre]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Apellido]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[FechaNacimiento]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[FechaInsercion]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaInsercion"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[FechaInsercion]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Cedula]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Nombre]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Apellido]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[FechaNacimiento]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[FechaInsercion]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaInsercion"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[FechaInsercion]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]"
+                      name="Id"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Id]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula]"
+                      name="Cedula">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Cedula]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre]"
+                      name="Nombre">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Nombre]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido]"
+                      name="Apellido">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[Apellido]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento]"
+                      name="FechaNacimiento">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[FechaNacimiento]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaInsercion]"
+                      name="FechaInsercion">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Left Input].Columns[FechaInsercion]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id_target]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id_target]"
+                      name="Id_target">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Id]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula_target]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula_target]"
+                      name="Cedula_target">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Cedula]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre_target]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre_target]"
+                      name="Nombre_target">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Nombre]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido_target]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido_target]"
+                      name="Apellido_target">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[Apellido]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento_target]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento_target]"
+                      name="FechaNacimiento_target">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[FechaNacimiento]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaInsercion_target]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaInsercion_target]"
+                      name="FechaInsercion_target">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Delta Load\Merge Join.Inputs[Merge Join Right Input].Columns[FechaInsercion]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[PersonaTarget]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Delta Load\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Id]"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Id]"
+                      name="Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Cedula]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Cedula]"
+                      length="10"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Cedula]"
+                      name="Cedula"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Nombre]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Nombre]"
+                      length="25"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Nombre]"
+                      name="Nombre"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Apellido]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Apellido]"
+                      length="25"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Apellido]"
+                      name="Apellido"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FechaNacimiento]"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaNacimiento]"
+                      name="FechaNacimiento"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FechaInsercion]"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaInsercion]"
+                      name="FechaInsercion"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Id]"
+                      dataType="i4"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      name="Cedula" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      name="Nombre" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      name="Apellido" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      name="FechaNacimiento" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      name="FechaInsercion" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Id]"
+                      name="Id" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Cedula]"
+                      name="Cedula" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Nombre]"
+                      name="Nombre" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Apellido]"
+                      name="Apellido" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FechaNacimiento]"
+                      name="FechaNacimiento" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FechaInsercion]"
+                      name="FechaInsercion" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\PersonaSource"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Consume datos de SQL Server, OLE DB, ODBC u Oracle mediante el correspondiente proveedor de datos de .NET Framework. Se usa una instrucción Transact-SQL para definir el conjunto de resultados. Por ejemplo, se extraen datos de SQL Server con el proveedor de datos de .NET Framework para SQL Server.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4"
+              description="Consume datos de SQL Server, OLE DB, ODBC u Oracle mediante el correspondiente proveedor de datos de .NET Framework. Se usa una instrucción Transact-SQL para definir el conjunto de resultados. Por ejemplo, se extraen datos de SQL Server con el proveedor de datos de .NET Framework para SQL Server."
+              name="PersonaSource"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Especifica la instrucción SQL utilizada por el componente para extraer datos."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si se debe permitir que columnas externas que no sean de cadenas se conviertan implícitamente en cadenas en las columnas de salida."
+                  name="AllowImplicitStringConversion">true</property>
+                <property
+                  dataType="System.String"
+                  description="Nombre de la tabla de la base de datos de origen."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">"dbo"."PersonaSource"</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especificar el modo de recuperar información de columnas externas"
+                  name="AccessMode"
+                  typeConverter="Microsoft.SqlServer.Dts.Pipeline.DataReaderSourceAdapter+EnumToStringConverter">0</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.DataReaderSourceAdapter</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Delta Load\PersonaSource.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB]"
+                  description="Administrador de conexiones administrado"
+                  name="IDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET]"
+                  name="Salida de origen de ADO NET">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Id]"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Id]"
+                      name="Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Cedula]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Cedula]"
+                      length="10"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Cedula]"
+                      name="Cedula"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Nombre]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Nombre]"
+                      length="25"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Nombre]"
+                      name="Nombre"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Apellido]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Apellido]"
+                      length="25"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Apellido]"
+                      name="Apellido"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[FechaNacimiento]"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaNacimiento]"
+                      name="FechaNacimiento"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[FechaInsercion]"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaInsercion]"
+                      name="FechaInsercion"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Id]"
+                      dataType="i4"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      name="Cedula" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      name="Nombre" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      name="Apellido" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      name="FechaNacimiento" />
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].ExternalColumns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      name="FechaInsercion" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET]"
+                  isErrorOut="true"
+                  name="Salida de error de origen de ADO NET">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Id]"
+                      name="Id" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Cedula]"
+                      name="Cedula" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Nombre]"
+                      name="Nombre" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[Apellido]"
+                      name="Apellido" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[FechaNacimiento]"
+                      name="FechaNacimiento" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[FechaInsercion]"
+                      name="FechaInsercion" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de error de origen de ADO NET].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Sort"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Sort.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort.Inputs[Sort Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Id]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort.Inputs[Sort Input].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Cedula]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort.Inputs[Sort Input].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Nombre]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort.Inputs[Sort Input].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Apellido]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort.Inputs[Sort Input].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaNacimiento]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort.Inputs[Sort Input].Columns[FechaInsercion]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaInsercion"
+                      lineageId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaInsercion]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Sort.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Id]"
+                      name="Id"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Id]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Cedula]"
+                      name="Cedula">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Cedula]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Nombre]"
+                      name="Nombre">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Nombre]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[Apellido]"
+                      name="Apellido">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[Apellido]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[FechaNacimiento]"
+                      name="FechaNacimiento">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaNacimiento]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Sort.Outputs[Sort Output].Columns[FechaInsercion]"
+                      name="FechaInsercion">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output].Columns[FechaInsercion]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Sort 1"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort 1"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Sort 1.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort 1.Inputs[Sort Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Id]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort 1.Inputs[Sort Input].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Cedula]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort 1.Inputs[Sort Input].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Nombre]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort 1.Inputs[Sort Input].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Apellido]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort 1.Inputs[Sort Input].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaNacimiento]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Delta Load\Sort 1.Inputs[Sort Input].Columns[FechaInsercion]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaInsercion"
+                      lineageId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaInsercion]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Sort 1.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Id]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Id]"
+                      name="Id"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Id]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Cedula]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Cedula]"
+                      name="Cedula">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Cedula]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Nombre]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Nombre]"
+                      name="Nombre">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Nombre]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Apellido]"
+                      dataType="wstr"
+                      length="25"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[Apellido]"
+                      name="Apellido">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[Apellido]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[FechaNacimiento]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[FechaNacimiento]"
+                      name="FechaNacimiento">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaNacimiento]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[FechaInsercion]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Delta Load\Sort 1.Outputs[Sort Output].Columns[FechaInsercion]"
+                      name="FechaInsercion">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET].Columns[FechaInsercion]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Update rows"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="Update rows"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE PersonaTarget
+SET 
+       [Cedula] = ?
+      ,[Nombre] = ?
+      ,[Apellido] = ?
+      ,[FechaNacimiento] = ?
+WHERE Id =?;</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Delta Load\Update rows.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+                  connectionManagerRefId="Package.ConnectionManagers[DESKTOP-VH3H9M3.SSIS_TEST_DB1]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].Columns[Id]"
+                      cachedDataType="i4"
+                      cachedName="Id"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      externalMetadataColumnId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      externalMetadataColumnId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      externalMetadataColumnId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      externalMetadataColumnId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="wstr"
+                      length="10"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      dataType="wstr"
+                      length="25"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="wstr"
+                      length="25"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="dbTimeStamp"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      dataType="i4"
+                      name="Param_4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Update rows.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Update rows.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Update rows.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Update rows.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\Update rows.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Update rows.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Delta Load\Verify modified data"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Verify modified data"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[Cedula]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[Nombre]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[Apellido]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[FechaNacimiento]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[Cedula_target]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="Cedula_target"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula_target]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[Nombre_target]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Nombre_target"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre_target]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[Apellido_target]"
+                      cachedDataType="wstr"
+                      cachedLength="25"
+                      cachedName="Apellido_target"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido_target]" />
+                    <inputColumn
+                      refId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input].Columns[FechaNacimiento_target]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="FechaNacimiento_target"
+                      lineageId="Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento_target]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Delta Load\Verify modified data.Outputs[UPDATE]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="UPDATE"
+                  synchronousInputId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula]} != #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Cedula_target]} || #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre]} != #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Nombre_target]} || #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido]} != #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[Apellido_target]} || #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento]} != #{Package\Delta Load\Merge Join.Outputs[Merge Join Output].Columns[FechaNacimiento_target]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">Cedula != Cedula_target || Nombre != Nombre_target || Apellido != Apellido_target || FechaNacimiento != FechaNacimiento_target</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Verify modified data.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Delta Load\Verify modified data.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Delta Load\Verify modified data.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Verify modified data.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Delta Load\Verify modified data.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Delta Load\Verify modified data.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Delta Load.Paths[Conditional Split Default Output]"
+              endId="Package\Delta Load\Verify modified data.Inputs[Conditional Split Input]"
+              name="Conditional Split Default Output"
+              startId="Package\Delta Load\Conditional Split.Outputs[Conditional Split Default Output]" />
+            <path
+              refId="Package\Delta Load.Paths[DELETE]"
+              endId="Package\Delta Load\Delete rows.Inputs[OLE DB Command Input]"
+              name="DELETE"
+              startId="Package\Delta Load\Conditional Split.Outputs[DELETE]" />
+            <path
+              refId="Package\Delta Load.Paths[INSERT]"
+              endId="Package\Delta Load\Insert on PersonaTarget.Inputs[Entrada de destino de ADO NET]"
+              name="INSERT"
+              startId="Package\Delta Load\Conditional Split.Outputs[INSERT]" />
+            <path
+              refId="Package\Delta Load.Paths[Merge Join Output]"
+              endId="Package\Delta Load\Conditional Split.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\Delta Load\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\Delta Load.Paths[OLE DB Source Output]"
+              endId="Package\Delta Load\Sort.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\Delta Load\OLE DB Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Delta Load.Paths[Salida de origen de ADO NET]"
+              endId="Package\Delta Load\Sort 1.Inputs[Sort Input]"
+              name="Salida de origen de ADO NET"
+              startId="Package\Delta Load\PersonaSource.Outputs[Salida de origen de ADO NET]" />
+            <path
+              refId="Package\Delta Load.Paths[Sort Output]"
+              endId="Package\Delta Load\Merge Join.Inputs[Merge Join Left Input]"
+              name="Sort Output"
+              startId="Package\Delta Load\Sort 1.Outputs[Sort Output]" />
+            <path
+              refId="Package\Delta Load.Paths[Sort Output1]"
+              endId="Package\Delta Load\Merge Join.Inputs[Merge Join Right Input]"
+              name="Sort Output"
+              startId="Package\Delta Load\Sort.Outputs[Sort Output]" />
+            <path
+              refId="Package\Delta Load.Paths[UPDATE]"
+              endId="Package\Delta Load\Update rows.Inputs[OLE DB Command Input]"
+              name="UPDATE"
+              startId="Package\Delta Load\Verify modified data.Outputs[UPDATE]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{DF6C26EB-6085-4554-B692-74747B46C304}"
+      DTS:EventID="3"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="The propagate property of the event"
+          DTS:DTSID="{E3371680-50A1-4F90-881F-90D5A5E4BF8B}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Log Errors"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Tarea Ejecutar SQL"
+          DTS:DTSID="{D146EEA4-CD29-43E5-BF88-AF35FD2E8CFD}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Log Errors"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{52C10268-63BE-4725-ACFC-04CD56E11791}"
+              SQLTask:SqlStatementSource="EXEC sp_SSISLogErrors ?, ?, ?" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="System::PackageName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="200" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="System::SourceName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="255" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="NewParameterName"
+                SQLTask:DtsVariableName="System::ErrorDescription"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta sección CDATA contiene la información de diseño del paquete. Esta sección incluye información como, por ejemplo, las coordenadas (x,y), el ancho y el alto.-->
+<!--Si edita manualmente esta sección y comete un error, puede eliminarlo. -->
+<!--El paquete podrá cargarse normalmente, pero se perderá la información de diseño anterior y el diseñador reorganizará los elementos automáticamente en la superficie de diseño.-->
+<Objects
+  Version="8">
+  <!--Cada uno de los nodos siguientes contiene propiedades que no afectan al comportamiento en tiempo de ejecución.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="128.8,41.6"
+          Id="Package\Delta Load"
+          TopLeft="560.192285432266,145.066667819553" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Delta Load">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="150.4,41.6"
+          Id="Package\Delta Load\PersonaSource"
+          TopLeft="263.452370483724,61.4095242975629" />
+        <NodeLayout
+          Size="97.6,41.6"
+          Id="Package\Delta Load\Sort"
+          TopLeft="657.142831030347,148.523809341779" />
+        <NodeLayout
+          Size="106.4,41.6"
+          Id="Package\Delta Load\Sort 1"
+          TopLeft="283.333322074679,148.571429752168" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[Salida de origen de ADO NET]"
+          TopLeft="337.592846279202,103.009524297563">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,45.5619054546054"
+              Start="0,0"
+              End="0,38.0619054546054">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.0619054546054" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="129.6,41.6"
+          Id="Package\Delta Load\Merge Join"
+          TopLeft="438.095220686898,235.857144731567" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[Sort Output]"
+          TopLeft="336.533322074679,190.171429752168">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="166.361898612219,45.6857149793988"
+              Start="0,0"
+              End="166.361898612219,38.1857149793988">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.8428574896994" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.8428574896994"
+                    Point2="0,22.8428574896994"
+                    Point3="4,22.8428574896994" />
+                  <mssgle:LineSegment
+                    End="162.361898612219,22.8428574896994" />
+                  <mssgle:CubicBezierSegment
+                    Point1="162.361898612219,22.8428574896994"
+                    Point2="166.361898612219,22.8428574896994"
+                    Point3="166.361898612219,26.8428574896994" />
+                  <mssgle:LineSegment
+                    End="166.361898612219,38.1857149793988" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[Sort Output1]"
+          TopLeft="705.942831030347,190.123809341779">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-182.780943676782,45.7333353897881"
+              Start="0,0"
+              End="-182.780943676782,38.2333353897881">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.1053670724842" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.1053670724842"
+                    Point2="0,27.1053670724842"
+                    Point3="-4,27.1053670724842" />
+                  <mssgle:LineSegment
+                    End="-178.780943676782,27.1053670724842" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-178.780943676782,27.1053670724842"
+                    Point2="-182.780943676782,27.1053670724842"
+                    Point3="-182.780943676782,31.1053670724842" />
+                  <mssgle:LineSegment
+                    End="-182.780943676782,38.2333353897881" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="153.6,41.6"
+          Id="Package\Delta Load\Conditional Split"
+          TopLeft="431.547601899458,326.238097830803" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[Merge Join Output]"
+          TopLeft="505.621411293178,277.457144731567">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,48.7809530992357"
+              Start="0,0"
+              End="0,41.2809530992357">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.2809530992357" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="190.4,41.6"
+          Id="Package\Delta Load\Insert on PersonaTarget"
+          TopLeft="419.642840467749,430.904764979605" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[INSERT]"
+          TopLeft="511.595221183604,367.838097830803">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63.066667148802"
+              Start="0,0"
+              End="0,55.566667148802">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.566667148802" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-17.5903125,23.016243730651,35.180625,9.5341796875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="133.6,41.6"
+          Id="Package\Delta Load\Delete rows"
+          TopLeft="688.888861514905,326.055557558713" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[DELETE]"
+          TopLeft="585.147601899458,346.946827694758">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="103.741259615447,0"
+              Start="0,0"
+              End="96.2412596154472,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="96.2412596154472,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="30.4376805889736,5,35.3658984375,9.2705078125"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="152,41.6"
+          Id="Package\Delta Load\OLE DB Source"
+          TopLeft="631.94441933323,54.3333334366481" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[OLE DB Source Output]"
+          TopLeft="706.943625181789,95.9333334366481">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.5904759051309"
+              Start="0,0"
+              End="0,45.0904759051309">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.0904759051309" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="170.4,41.6"
+          Id="Package\Delta Load\Verify modified data"
+          TopLeft="91.6666630241607,324.611113102789" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[Conditional Split Default Output]"
+          TopLeft="431.547601899458,346.224605466796">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-169.480938875297,0"
+              Start="0,0"
+              End="-161.980938875297,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-161.980938875297,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-151.604375687649,5,141.2278125,11.658203125"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="136.8,41.6"
+          Id="Package\Delta Load\Update rows"
+          TopLeft="106.944440194854,425.000002789498" />
+        <EdgeLayout
+          Id="Package\Delta Load.Paths[UPDATE]"
+          TopLeft="176.105551609507,366.211113102789">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,58.7888896867083"
+              Start="0,0"
+              End="0,51.2888896867083">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.2888896867083" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-18.66189453125,20.9335073433541,37.3237890625,9.421875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Delta Load\PersonaSource">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Delta Load\Insert on PersonaTarget">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Delta Load\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <DtsEventHandler
+    design-time-name="Package.EventHandlers[OnError]">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="127.2,41.6"
+          Id="Package.EventHandlers[OnError]\Log Errors"
+          TopLeft="631.538461538462,222.461538461538" />
+      </GraphLayout>
+    </LayoutInfo>
+  </DtsEventHandler>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
